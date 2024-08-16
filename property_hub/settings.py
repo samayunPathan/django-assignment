@@ -66,8 +66,12 @@ WSGI_APPLICATION = 'property_hub.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sample_scrap',  # Replace with your PostgreSQL database name
+        'USER': 'postgres',  # Replace with your PostgreSQL user
+        'PASSWORD': 'p@stgress',  # Replace with your PostgreSQL password
+        'HOST': 'localhost',  # Set to your database host, 'localhost' if it's on the same machine
+        'PORT': '5433',  # Default PostgreSQL port
     }
 }
 

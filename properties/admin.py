@@ -41,7 +41,12 @@ class PropertyAdmin(admin.ModelAdmin):
 
     def image_preview(self, obj):
         if obj.images.exists():
-            return mark_safe(f'<img src="{obj.images.first().image.url}" width="100" height="100" />')
+            # Generate HTML for each image with flexbox styling
+            images_html = ''.join([
+                f'<div style="flex: 1 1 auto; margin: 5px;"><img src="{image.image.url}" style="width: auto; height: auto; max-width: 100px; max-height: 100px;" /></div>'
+                for image in obj.images.all()
+            ])
+            return mark_safe(f'<div style="display: flex; flex-wrap: wrap;">{images_html}</div>')
         return 'No image'
     image_preview.short_description = 'Image Preview'
 
@@ -85,7 +90,7 @@ class AmenityAdmin(admin.ModelAdmin):
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ('property', 'image_preview', 'created_at', 'updated_at')
+    list_display = ('property', 'image_preview', 'image_path', 'created_at', 'updated_at')
     search_fields = ('property__title',)
     list_filter = ('property', 'created_at')
     readonly_fields = ('image_preview', 'created_at', 'updated_at')
@@ -105,3 +110,9 @@ class ImageAdmin(admin.ModelAdmin):
             return mark_safe(f'<img src="{obj.image.url}" width="100" height="100" />')
         return 'No image'
     image_preview.short_description = 'Image Preview'
+
+    def image_path(self, obj):
+        if obj.image:
+            return obj.image.url
+        return 'No image path'
+    image_path.short_description = 'Image Path'

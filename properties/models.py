@@ -12,8 +12,8 @@ class Location(models.Model):
     type = models.CharField(max_length=20, choices=LOCATION_TYPES)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)  
-    updated_at = models.DateTimeField(auto_now=True)     
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ['name', 'type']
@@ -34,12 +34,13 @@ class Amenity(models.Model):
         return self.name
 
 class Property(models.Model):
+    property_id = models.IntegerField(primary_key=True)  # This will map to hotelId from Scrapy
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
-    locations = models.ManyToManyField(Location)
-    amenities = models.ManyToManyField(Amenity)
-    created_at = models.DateTimeField(auto_now_add=True)  
-    updated_at = models.DateTimeField(auto_now=True)      
+    locations = models.ManyToManyField('Location')
+    amenities = models.ManyToManyField('Amenity')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Properties"
